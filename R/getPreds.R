@@ -7,7 +7,7 @@ if all Y, P and Favourability are set to FALSE.")
   
   start.time <- Sys.time()
   
-  if (attributes(class(var_stack)) == "raster") {  # previously if("raster" %in% class(data))
+  if (attributes(class(data)) == "raster") {  # previously if("raster" %in% class(data))
     if (!require(raster)) stop("Input 'data' is in raster format, so you need to install the 'raster' package first.")
     preds <- raster::stack()
     mod.count <- 0
