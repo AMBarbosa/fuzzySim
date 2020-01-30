@@ -1,13 +1,13 @@
 getPreds <-
 function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE, incl.input = FALSE) {
-  # version 1.8 (08 Jan 2020)
+  # version 1.9 (30 Jan 2020)
 
   if (!Y & !P & !Favourability) stop("There are no predictions to get
 if all Y, P and Favourability are set to FALSE.")
   
   start.time <- Sys.time()
   
-  if ("raster" %in% class(data)) {  # "RasterStack"
+  if (attributes(class(var_stack)) == "raster") {  # previously if("raster" %in% class(data))
     if (!require(raster)) stop("Input 'data' is in raster format, so you need to install the 'raster' package first.")
     preds <- raster::stack()
     mod.count <- 0
