@@ -2,13 +2,12 @@ getPreds <-
 function(data, models, id.col = NULL, Y = FALSE, P = TRUE, Favourability = TRUE, incl.input = FALSE) {
   # version 1.9 (30 Jan 2020)
 
-  if (!Y & !P & !Favourability) stop("There are no predictions to get
-if all Y, P and Favourability are set to FALSE.")
+  if (!Y & !P & !Favourability) stop("There are no predictions to get if all Y, P and Favourability are set to FALSE.")
   
   start.time <- Sys.time()
   
-  if (attributes(class(data)) == "raster") {  # previously if("raster" %in% class(data))
-    if (!require(raster)) stop("Input 'data' is in raster format, so you need to install the 'raster' package first.")
+  if (is(data, "RasterStack")) {  # previously 'if("raster" %in% class(data))'
+    if (!requireNamespace("raster")) stop("Input 'data' is in raster format, so you need to install the 'raster' package first.")
     preds <- raster::stack()
     mod.count <- 0
       
@@ -41,10 +40,10 @@ if all Y, P and Favourability are set to FALSE.")
     }  # end for m
     
     return(preds)  
-  }
+  }  # end if RasterStack
   
   stopifnot(
-    is.data.frame(data),
+    is.data.frame(data) || is(data, "RasterStack"),
     is.list(models),
     is.null(id.col) | id.col %in% (1 : ncol(data)),
     is.logical(Y),
@@ -59,8 +58,7 @@ if all Y, P and Favourability are set to FALSE.")
   if (Favourability)  P <- TRUE  # P is necessary to calculate Fav
 
   n.nulls <- length(models[sapply(models, is.null)])
-  if (n.nulls > 0)  warning (n.nulls, " model(s) were NULL and therefore
-          did not generate predictions")
+  if (n.nulls > 0)  warning (n.nulls, " model(s) were NULL and therefore did not generate predictions")
   models <- models[!sapply(models, is.null)]
   n.models <- length(models)
   mod.count <- 0
@@ -68,8 +66,7 @@ if all Y, P and Favourability are set to FALSE.")
   for (m in 1:n.models) {
     mod.count <- mod.count + 1
     mod.name <- names(models)[m]
-    message("Predicting with model ", mod.count, " of " , n.models,
-            " (", mod.name, ")...")
+    message("Predicting with model ", mod.count, " of " , n.models, " (", mod.name, ")...")
     if (Y) {
       data[ , ncol(data) + 1] <- predict(models[[mod.count]], data)
       names(data)[ncol(data)] <- paste(mod.name, "Y", sep = "_")
