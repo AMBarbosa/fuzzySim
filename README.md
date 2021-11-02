@@ -1,5 +1,8 @@
 # fuzzySim
 Fuzzy Similarity in Species Distributions
 
+# package homepage:
+https://fuzzysim.r-forge.r-project.org/
+
 # to install the latest version:
 install.packages("fuzzySim", repos="http://R-Forge.R-project.org")
