@@ -8,7 +8,7 @@ It can then calculate e.g. fuzzy change and fuzzy similarity among (fuzzy) speci
 # install the latest version of `fuzzySim`:
 `install.packages("fuzzySim", repos="http://R-Forge.R-project.org")`
 
-`fuzzySim` is on CRAN, but the latest version (maintained on R-Forge) includes recent developments, such as new fuzzy metrics and a transition from 'raster' and 'sp' to the `terra` package, which is much faster.
+`fuzzySim` is on CRAN, but the latest version (maintained on R-Forge) usually includes recent developments, including enhancements and small bug fixes.
 
 # package homepage:
-Find out more about the package, along with manuals and vignettes, at https://fuzzysim.r-forge.r-project.org/
+Find out more about the package, along with usage manuals and literature examples, at https://fuzzysim.r-forge.r-project.org/
