@@ -1,11 +1,14 @@
 favClass <- function(fav, breaks = c(0.2, 0.8), character = FALSE) {
   
+  # version 1.2 (2 May 2022)
+  
+  fav <- unlist(fav)
+  
   stopifnot(
     is.numeric(fav),
     is.numeric(breaks),
     length(breaks) == 2,
-    fav >= 0,
-    fav <= 1,
+    is.na(fav) | fav >= 0 | fav <= 1,
     breaks >= 0,
     breaks <= 1
   )

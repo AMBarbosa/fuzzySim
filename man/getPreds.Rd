@@ -4,11 +4,11 @@
 Get model predictions
 }
 \description{
-This function allows getting the predictions of multiple models when applied to a given dataset. It can be useful if you have a list of model objects (e.g. resulting from \code{\link{multGLM}}) and want to apply them to a new data set containing the same variables for another region or time period. There are options to include the logit link (\code{Y}) and/or \code{Favourability} (see \code{\link{Fav}}).
+This function allows getting the predictions of multiple models when applied to a given dataset. It can be useful if you have a list of model objects (e.g. resulting from \code{\link{multGLM}}) and want to apply them to a new data set containing the same variables for another region or time period. There are options to include the logit link ('Y') and/or 'Favourability' (see \code{\link{Fav}}).
 }
 \usage{
 getPreds(data, models, id.col = NULL, Y = FALSE, P = TRUE, 
-Favourability = TRUE, incl.input = FALSE)
+Favourability = TRUE, incl.input = FALSE, verbosity = 2)
 }
 \arguments{
   \item{data}{
@@ -18,7 +18,7 @@ an object of class either 'data.frame' or 'RasterStack' to which to apply the 'm
 an object of class 'list' containing one or more model objects, obtained e.g. with function \code{\link{glm}} or \code{\link{multGLM}}.
 }
   \item{id.col}{
-optionally, the index number of a column of 'data' containing row identifiers, to be included in the result. Ignored if \code{incl.input = TRUE}, or if 'data' is a RasterStack rather than a data frame.
+optionally, the index number of a column of 'data' containing row identifiers, to be included in the result. Ignored if incl.input = TRUE, or if 'data' is a RasterStack rather than a data frame.
 }
   \item{Y}{
 logical, whether to include the logit link (y) value in the predictions.
@@ -30,8 +30,9 @@ logical, whether to include the probability value in the predictions.
 logical, whether to include Favourability in the predictions (see \code{\link{Fav}}).
 }
   \item{incl.input}{
-logical, whether to include input columns in the output data frame (if the 'data' input is a data frame as well). The default is FALSE.
+logical, whether to include input columns in the output data frame (if the 'data' input is a data frame too). The default is FALSE.
 }
+  \item{verbosity}{numeric value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}
 }
 \value{
 This function returns the model predictions in an object of the same class as the input 'data', i.e. either a data frame or a RasterStack.

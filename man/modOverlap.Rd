@@ -7,9 +7,9 @@ This function calculates the degree of overlap between the predictions of two mo
 modOverlap(pred1, pred2, na.rm = TRUE)
 }
 \arguments{
-  \item{pred1}{numeric vector of the predictions of a generalized linear model (values between 0 and 1).}
-  \item{pred2}{numeric vector of the predictions of another generalized linear model; must be of the same length and in the same order as \code{pred1}.}
-  \item{na.rm}{logical value indicating whether \code{NA} values should be removed prior to calculation.}
+  \item{pred1}{numeric vector or SpatRaster layer of the predictions of a model, with values between 0 and 1.}
+  \item{pred2}{numeric vector or SpatRaster layer of the predictions of another model, also with values between 0 and 1; must be of the same dimensions and in the same order as 'pred1'.}
+  \item{na.rm}{logical value indicating whether NA values should be removed prior to calculation. The default is TRUE.}
 }
 \details{
 See Warren et al. (2008).
@@ -28,11 +28,8 @@ van der Vaart A.W. (1998)  Asymptotic statistics. Cambridge Univ. Press, Cambrid
 Warren D.L., Glor R.E. & Turelli M. (2008) Environmental niche equivalency versus conservatism: quantitative approaches to niche evolution. Evolution, 62: 2868-83 (and further ERRATUM)
 }
 \author{A. Marcia Barbosa}
-\note{
-Thanks to Heidi K. Mod for reporting a typo in a previous version of the function. Another function providing similar measures, \code{niche.overlap}, is available in package \pkg{phyloclim}, but it requires complex and software-specific input data formats.
-}
 \seealso{
-\code{\link{fuzSim}}; \code{niche.overlap} in package \pkg{phyloclim}
+\code{\link{fuzSim}}; \code{\link{fuzzyOverlay}}; \code{niche.overlap} in package \pkg{phyloclim}; \code{ecospat.niche.overlap} in package \pkg{ecospat}
 }
 \examples{
 # get an environmental favourability model for a rotifer species:
@@ -41,7 +38,7 @@ data(rotif.env)
 
 names(rotif.env)
 
-fav_current <- multGLM(rotif.env, sp.cols = 18, var.cols = 5:17,  
+fav_current <- multGLM(rotif.env, sp.cols = 18, var.cols = 5:17,
 step = TRUE, FDR = TRUE, trim = TRUE, P = FALSE, Fav = TRUE) $
 predictions
 

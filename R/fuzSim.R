@@ -1,9 +1,18 @@
-fuzSim <-
-function(x, y, method, na.rm = TRUE) {
-  
+fuzSim <- function(x, y, method, na.rm = TRUE) {
+
+  # version 2.0 (3 Oct 2024)
+
+  if (inherits(x, "SpatRaster"))
+    x <- terra::values(x, mat = FALSE, dataframe = FALSE)
+  if (inherits(y, "SpatRaster"))
+    y <- terra::values(y, mat = FALSE, dataframe = FALSE)
+
+  x <- unlist(x)
+  y <- unlist(y)
+
   method <- match.arg(method, c("Jaccard", "Sorensen", "Simpson", "Baroni"))
   dab.methods <- c("Baroni")
-  
+
   if (na.rm) {
     data <- cbind(x, y)
     data <- na.omit(data)
@@ -11,8 +20,8 @@ function(x, y, method, na.rm = TRUE) {
     y <- data[ , 2]
   }
 
-  stopifnot (length(x) == length(y), 
-             #x >= 0 & x <= 1, 
+  stopifnot (length(x) == length(y),
+             #x >= 0 & x <= 1,
              #y >= 0 & y <= 1
              min(c(x, y, na.rm = TRUE)) >= 0,
              max(c(x, y, na.rm = TRUE)) <= 1
