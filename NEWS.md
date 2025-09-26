@@ -1,4 +1,4 @@
-# Version 4.36
+# Version 4.36 -> CRAN
 #### (Committed 2025-09-26)
 
 ### Modified functions:
