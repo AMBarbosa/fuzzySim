@@ -1,3 +1,145 @@
+# Version 4.60
+#### (Committed 2026-  -  )
+
+### Modified functions:
+
+* selectAbsences
+    - fixed error when 'data' SpatVector and plot = TRUE
+
+
+### Other modified files:
+
+* fuzsim.Rd
+    - mention Jaccard equivalence to Tanimoto index
+
+
+# Version 4.59 -> CRAN
+#### (Committed 2026-08-27)
+
+### Modified functions:
+
+* pairwiseRangemaps
+    - default 'filename' with no ':' hour separators, to avoid error on Windows
+
+* rangemapSim
+    - 'diag' and 'upper' default TRUE, to meet RMacoqui::macoqui() input requirements
+
+
+### Other modified files:
+
+* rangemapSim.Rd
+    - updated Barbosa & Estrada reference from 'in press'
+
+* pairwise_rangemaps_tutorial.Rmd
+    - updated with Alytes examples and new outputs
+
+
+# Version 4.58
+#### (Committed 2026-08-04)
+
+### New functions:
+
+* clampVars
+
+
+# Version 4.57
+#### (Committed 2026-07-29)
+
+### Modified functions:
+
+* pairwiseRangemaps
+    - add try() to write.csv(), to prevent failure if file cannot be saved (bug report by Jose C. Guerrero)
+
+* rangemapSim
+    - match.arg() to prevent error if 'method' not specified
+    - 'verbosity' default 0 to avoid message repetitions
+
+* selectAbsences
+    - output plot SpatVector if 'terra' available (was implemented incompletely)
+
+* corSelect
+    - accommodate SpatRaster 'data' (pending implementation of 'sp.cols' in this case)
+
+
+### Other modified files:
+
+* simMat.Rd
+    - simplify plotting examples
+
+
+# Version 4.56
+#### (Committed 2026-07-27)
+
+### Modified functions:
+
+* pairwiseRangemaps
+    - terra::wrap() and terra::unwrap() to prevent error if Ncpu > 1 (bug report by Jose C. Guerrero)
+    - add 'region' argument
+    - remove recent 'unit' argument, to prevent inconsistent use
+    - "R_chunks_IN-PROGRESS" and "R_chunks_FINISH" folder names suffixed with [date_time] to avoid name repetition
+
+* rangemapSim
+    - 'total.area' can be a polygon SpatVector (like 'region' above)
+
+
+# Version 4.55
+#### (Committed 2026-07-23)
+
+### Modified functions:
+
+* pairwiseRangemaps
+    - use terra::aggregate() to prevent topological errors (bug report by Jose C. Guerrero)
+    - 'rangemaps' can now be either file names or a list of SpatVectors
+    - error if 'rangemaps' are not all polygons
+    - names in output matrix as in input (no replacing spaces with "_")
+    - new optional arguments 'buffer' and 'unit' to pass to 'terra'
+    - default output 'filename' suffixed with [date_time] to avoid name repetition
+
+
+### Other modified files:
+
+* biasLayer.Rd, selectAbsences.Rd
+    - cite El-Gabbas (2026) bias layers
+
+
+# Version 4.54 -> CRAN
+#### (Committed 2026-04-21)
+
+### Modified functions:
+
+* cleanCoords, gridRecords
+    - new argument '...' to pass to plot()
+
+
+# Version 4.53
+#### (Committed 2026-04-22)
+
+### Modified functions:
+
+* multicol
+    - new arguments 'max.nvars' and 'simplif'
+
+
+# Version 4.52
+#### (Committed 2026-04-17)
+
+### Modified functions:
+
+* partialResp
+    - when ylim="auto", plots no longer all get the ylim of the first variable (bug report by Alba Estrada)
+    - new arguments line.col, ci.col, point.col
+
+
+# Version 4.51
+#### (Committed 2026-04-07)
+
+### Modified functions:
+
+* cleanCoords
+    - plot red X only for removed (not all input) records
+    - use GBIF default values for coord.cols, uncert.col, abs.col and year.col
+
+
 # Version 4.50 -> CRAN
 #### (Committed 2026-03-27)
 
@@ -7,7 +149,7 @@
     - added 'simplif' argument
 
 * distMat (affecting getRegion)
-    - method "auto": "haversine" only if is.lonlat(perhaps=TRUE), otherwise "euclidean"
+    - method "auto": "haversine" only if is.lonlat(perhaps=TRUE), otherwise "euclidean" (bug report by getRegion article reviewer)
 
 * getRegion
     - 'prj=TRUE' used only for plotting; output always in input CRS
@@ -607,7 +749,7 @@
 ### Modified functions:
 
 * corSelect
-    - fixed incorrect use of all.equal() to compare results between different 'select' criteria (thanks to bug report by Jose Carlos Guerrero)
+    - fixed incorrect use of all.equal() to compare results between different 'select' criteria (bug report by Jose C. Guerrero)
 
 
 ### Other modified files:
@@ -634,10 +776,8 @@
     - replaced 'requireNamespace(raster)' with 'raster %in% rownames(installed.packages())', to avoid loading the pkg if unnecessary
 
 
-==
 # Version 4.10.4 
 #### (Committed 2023-09-28)
-==
 
 ### Modified functions:
 
@@ -645,10 +785,8 @@
     - added 'year.min' and 'year.na.pass' arguments
 
 
-==
 # Version 4.10.3 
 #### (Committed 2023-09-25)
-==
 
 ### Modified functions:
 
@@ -668,20 +806,16 @@
     - now states that row names are carried from input dataframe
 
 
-==
 # Version 4.10.2 
 #### (Committed 2023-09-23)
-==
 
 ### New functions:
 
 * appendData
 
 
-==
 # Version 4.10.1 
 #### (Committed 2023-07-04)
-==
 
 ### Modified functions:
 
@@ -698,10 +832,8 @@
     - added "however" references against dropping correlated variables
 
 
-==
 # Version 4.10 
 #### (Committed 2023-05-24)
-==
 
 ### Modified functions:
 
@@ -710,10 +842,8 @@
     - precluded error when no variables pass corSelect
 
 
-==
 # Version 4.9.13 
 #### (Committed 2023-05-22)
-==
 
 ### Modified functions:
 
@@ -721,10 +851,8 @@
     - fixed bug that didn't allow correctly reporting the selected variables when coeff=FALSE
 
 
-==
 # Version 4.9.12 
 #### (Committed 2023-05-21)
-==
 
 ### Modified functions:
 
@@ -734,10 +862,9 @@
     - fixed bug when there's >1 categorical variable to exclude a priori
 
 
-==
 # Version 4.9.11 
 #### (Committed 2023-05-17)
-==
+
 
 ### Modified functions:
 
@@ -746,10 +873,8 @@
     - started implementation of 'block.cols' argument (still not useable)
 
 
-==
 # Version 4.9.10 
 #### (Committed 2023-04-21)
-==
 
 ### Modified functions:
 
@@ -760,10 +885,8 @@
     - help file updated accordingly
 
 
-==
 # Version 4.9.9 
 #### (Committed 2023-04-14) -> CRAN
-==
 
 ### Modified functions:
 
@@ -778,10 +901,8 @@
     - input 'pres.coords' and 'abs.coords' can also be SpatVector of points
 
 
-==
 # Version 4.9.8 
 #### (Committed 2023-03-06) -> CRAN
-==
 
 ### Modified files:
 
@@ -789,10 +910,8 @@
     - removed old-style personList(), and replaced citEntry() with bibentry(), as per new CRAN requirements
 
 
-
 # Version 4.9.8 
 #### (Committed 2023-02-22)
-
 
 ### Modified functions:
 
@@ -805,10 +924,8 @@
     - points now plotted in this order: absences, presences on top
 
 
-
 # Version 4.9.7 
 #### (Committed 2023-01-25)
-
 
 ### Modified functions:
 
@@ -817,10 +934,8 @@
     - changed default 'uncert.limit' from Inf to 50000
 
 
-
 # Version 4.9.6 
 #### (Committed 2023-01-24)
-
 
 ### New functions:
 
@@ -833,10 +948,8 @@
     - fixed bug in 'rm.imprecise'
 
 
-
 # Version 4.9.5 
 #### (Committed 2023-01-20)
-
 
 ### New functions:
 
@@ -854,10 +967,8 @@
     - default 'plot.type' now "lollipop"
 
 
-
 # Version 4.9.4 
 #### (Committed 2023-01-12)
-
 
 ### Modified functions:
 
@@ -871,10 +982,8 @@
     - packages 'PBSmapping', 'sp' and 'maptools' removed from 'Suggests'
 
 
-
 # Version 4.9.3 
 #### (Committed 2023-01-09)
-
 
 ### Modified functions:
 
@@ -889,13 +998,11 @@
     - total N variables now reported when TSA=TRUE (i.e. "... 46 with the spatial trend variable" instead of just "...plus the spatial trend variable")
 
 * modelTrim
-    - added family <- family(model) when method = "summary", as per bug report by J.C.Guerrero email 30/12/2022
-
+    - added family <- family(model) when method = "summary" (bug report by Jose C. Guerrero, email 30/12/2022)
 
 
 # Version 4.9.2 
 #### (Committed 2022-10-27)
-
 
 ### Modified functions:
 
@@ -913,10 +1020,8 @@
     - help file now mentions Jaccard and Sorensen also as recommended metrics for model evaluation
 
 
-
 # Version 4.9.1 
 #### (Committed 2022-10-13)
-
 
 ### Modified functions:
 
@@ -937,10 +1042,8 @@
     - argument trim.fun (added in previous experimental versions) removed
 
 
-
 # Version 4.9 
 #### (Committed 2022-10-11)
-
 
 ### Modified functions:
 
@@ -957,10 +1060,8 @@
     - help file with new references (two against AIC, and one more against stepwise)
 
 
-
 # Version 4.8.1 
 #### (Committed 2022-08-01)
-
 
 ### Modified functions:
 
@@ -976,10 +1077,8 @@
     - help file notes that 'TSA' uses "type="Y" and is included in FDR, corSelect, etc.
 
 
-
 # Version 4.8 
 #### (Committed 2022-07-21)
-
 
 ### Modified functions:
 
@@ -995,10 +1094,8 @@
     - help file notes that 'modelTrim' and 'stepwise' have different default significance thresholds, to explain why 'stepwise' may leave more variables in the model
 
 
-
 # Version 4.7 
 #### (Committed 2022-07-07)
-
 
 ### Modified functions:
 
@@ -1014,10 +1111,8 @@
     - added y axis label
 
 
-
 # Version 4.6 
 #### (Committed 2022-07-05)
-
 
 ### New functions:
 
@@ -1038,10 +1133,8 @@
     - added argument trim.fun="modelTrim", which can be changed to "stepwise"
 
 
-
 # Version 4.5 
 #### (Committed 2022-06-15)
-
 
 ### Modified functions:
 
@@ -1050,10 +1143,8 @@
     - added 'direction' argument to pass to 'step' (implementation by Alba Estrada)
 
 
-
-# Version 4.4 
+# Version 4.4
 #### (Committed 2022-06-14)
-
 
 ### Modified functions:
 
@@ -1067,10 +1158,8 @@
     - 'sp.col' and 'var.cols' can now be column names, not just index numbers
 
 
-
 # Version 4.3 
 #### (Committed 2022-06-01) -> CRAN
-
 
 ### Modified functions:
 
@@ -1079,10 +1168,8 @@
     - removed unnecessary argument 'fav.cols' (as no other '*.cols' argument exists)
 
 
-
 # Version 4.2 
 #### (Committed 2022-05-31)
-
 
 ### New functions:
 
@@ -1101,10 +1188,8 @@
     - added reference about the method, as suggested by Uwe Ligges after previous CRAN submission
 
 
-
 # Version 4.1 
 #### (Committed 2022-05-15)
-
 
 ### Modified functions:
 
@@ -1112,10 +1197,8 @@
     - improved help file and removed reference to requiring GLM predictions
 
 
-
 # Version 4.0 
 #### (Committed 2022-05-02) -> CRAN
-
 
 ### New functions:
 
@@ -1134,10 +1217,8 @@
     - added 'unlist' to avoid obscure error when input is one-column tibble instead of vector
 
 
-
 # Version 3.96 
 #### (Committed 2022-03-22)
-
 
 ### Modified functions:
 
@@ -1149,10 +1230,8 @@
     - returned value now includes 'FOvI' and 'bins_table'
 
 
-
 # Version 3.95 
 #### (Committed 2022-03-22)
-
 
 ### New functions:
 
@@ -1180,10 +1259,8 @@
     - added Note to help file about possible error when overly small bins
 
 
-
 # Version 3.9 
 #### (Committed 2022-03-13)
-
 
 ### Modified functions:
 
@@ -1200,10 +1277,8 @@
     - added 'Gamma' for positive non-integer responses when family="auto"
 
 
-
 # Version 3.8 
 #### (Committed 2022-02-05)
-
 
 ### Modified functions:
 
@@ -1214,10 +1289,8 @@
     - fixed bug that did not grid abs.coords (if not NULL)
 
 
-
 # Version 3.7 
 #### (Committed 2022-01-21) -> CRAN
-
 
 ### Modified functions:
 
@@ -1234,10 +1307,8 @@
     - updated Sorensen wikipedia link with 'https'
 
 
-
 # Version 3.6 
 #### (Committed 2021-09-29)
-
 
 ### Modified functions:
 
@@ -1250,10 +1321,8 @@
     - Raster* 'rst' coerced to SpatRaster if 'terra' pkg is installed
 
 
-
 # Version 3.5 
 #### (Committed 2021-09-04)
-
 
 ### Modified functions:
 
@@ -1261,10 +1330,8 @@
     - fixed bug when using 'pvalues' as input (following bug report by Stephen via modTools contact form)
 
 
-
 # Version 3.4 
 #### (Committed 2021-09-02)
-
 
 ### Modified functions:
 
@@ -1272,10 +1339,8 @@
     - fixed bug when only one raster layer [ , drop = FALSE]
 
 
-
 # Version 3.3 
 #### (Committed 2021-04-24)
-
 
 ### Modified functions:
 
@@ -1295,10 +1360,8 @@
     - 'pred' can now also be a RasterLayer (not only a numeric vector)
 
 
-
 # Version 3.2 
 #### (Committed 2020-12-12)
-
 
 ### Modified functions:
 
@@ -1311,10 +1374,8 @@
     - added Linero et al. (2020) to references of papers using fuzzySim
 
 
-
 # Version 3.1 
 #### (Committed 2020-09-18)
-
 
 ### Modified functions:
 
@@ -1322,10 +1383,8 @@
     - added 'absences' logical argument
 
 
-
-# Version 3.0 
+# Version 3.0
 #### (Committed 2020-02-03) -> CRAN
-
 
 ### Modified functions:
 
@@ -1339,10 +1398,8 @@
     -  clarifications and typo/format corrections in the manual
 
 
-
 # Version 2.5 
 #### (Committed 2020-01-31)
-
 
 ### Modified files:
 
@@ -1350,10 +1407,8 @@
     - added examples
 
 
-
 # Version 2.2.4 
 #### (Committed 2020-01-30)
-
 
 ### New functions:
 
@@ -1368,10 +1423,8 @@
     - if 'data' are raster, added 'raster::' before 'stack'
 
 
-
 # Version 2.2.3 
 #### (Committed 2020-01-06)
-
 
 ### Modified functions:
 
@@ -1385,10 +1438,8 @@
   - added package URLs to DESCRIPTION file
 
 
-
 # Version 2.2.2 
 #### (Committed 2020-01-03)
-
 
 ### Modified functions:
 
@@ -1402,10 +1453,8 @@
 - fixed length of some lines along the PDF manual
 
 
-
 # Version 2.2.1 
 #### (Committed 2019-10-18)
-
 
 ### Modified functions:
 
@@ -1416,20 +1465,16 @@
     - slightly reduced probabilities of exactly 1, which would cause division by zero (resulting Fav is still 1)
 
 
-
 # Version 2.2 
 #### (Committed 2019-03-10)
-
 
 ### New functions:
 
 * sharedFav
 
 
-
 # Version 2.1 
 #### (Committed 2019-03-07)
-
 
 ### New functions:
 
@@ -1443,7 +1488,7 @@
     - spatial_trend variable in models (when TSA=TRUE and the spatial trend is selected) now named after the response variable (e.g. 'sptrend_giraffe')
 
 * getPreds:
-    - fixed new bug by replacing 'if (class(data) == "RasterStack")' with 'if ("RasterStack" %in% class(data))'
+    - fixed new bug by replacing 'if (class(data)  "RasterStack")' with 'if ("RasterStack" %in% class(data))'
 
 
 ### Modified .Rd files:
@@ -1457,10 +1502,8 @@
 - updated maintainer e-mail address
 
 
-
 # Version 2.0 
 #### (Committed 2018-12-05) -> CRAN
-
 
 ### Modified functions:
 
@@ -1471,7 +1514,6 @@
 
 # Version 1.9 
 #### (Committed 2018-11-20)
-
 
 ### Modified functions:
 
@@ -1493,10 +1535,8 @@
     - "Building model 1..." 'message' instances replaced with 'cat' so that they are saved if 'sink' is used
 
 
-
 # Version 1.8.3 
 #### (Committed 2018-07-06)
-
 
 ### Modified functions:
 
@@ -1519,10 +1559,8 @@
 - added additional article citing fuzzySim
 
 
-
 # Version 1.8.2 
 #### (Committed 2018-05-23)
-
 
 ### Modified functions:
 
@@ -1530,10 +1568,8 @@
     - 'data' can now be a RasterStack
 
 
-
 # Version 1.8.1 
 #### (Committed 2018-05-15)
-
 
 ### Modified functions:
 
@@ -1545,10 +1581,8 @@
 - added articles citing fuzzySim
 
 
-
 # Version 1.8.0 
 #### (Committed 2017-07-07)
-
 
 ### Modified functions:
 
@@ -1556,10 +1590,8 @@
     - included 'VIF' criterion
 
 
-
 # Version 1.7.9 
 #### (Committed 2017-03-27)
-
 
 ### Modified functions:
 
@@ -1575,10 +1607,8 @@
     - reduced several code line lengths to avoid overboard
 
 
-
 # Version 1.7.8 
 #### (Committed 2016-09-15)
-
 
 ## Removed empty sections from .Rd files
 
@@ -1590,10 +1620,8 @@
     - 'col' no longer supplied by default
 
 
-
 # Version 1.7.7 
 #### (Committed 2016-08-01)
-
 
 ### Modified functions:
 
@@ -1602,10 +1630,8 @@
     - added 'subchunks' argument for continuing interrupted runs
 
 
-
 # Version 1.7.6 
 #### (Committed 2016-05-05)
-
 
 ### Modified functions:
 
@@ -1617,10 +1643,8 @@
     - FDR correction reverted to "fdr" by default
 
 
-
 # Version 1.7.5 
 #### (Committed 2016-04-26)
-
 
 ### Modified functions:
 
@@ -1634,10 +1658,8 @@
     - added "select" argument (for 'step') - AIC or BIC
 
 
-
 # Version 1.7.4 
 #### (Committed 2016-04-15)
-
 
 ### Modified functions:
 
@@ -1645,10 +1667,8 @@
     - FDR correction now "BY" by default
 
 
-
 # Version 1.7.3 
 #### (Committed 2016-04-12)
-
 
 ### Modified functions:
 
@@ -1661,10 +1681,8 @@
     - added 'correction' argument to pass to 'FDR'
 
 
-
 # Version 1.7.2 
 #### (Committed 2016-03-22)
-
 
 ### Modified functions:
 
@@ -1674,10 +1692,8 @@
     - results provided also as a barplot
 
 
-
 # Version 1.7.1 
 #### (Committed 2016-03-17)
-
 
 ### Modified functions:
 
@@ -1685,10 +1701,8 @@
     - eliminated call to 'attach'
 
 
-
 # Version 1.7 
 #### (Committed 2016-02-12)
-
 
 ### New functions:
 
@@ -1697,10 +1711,8 @@
 * rangemapSim (calculate  rangemap similarity using common similarity indices)
 
 
-
 # Version 1.6.3 
 #### (Committed 2015-12-02)
-
 
 ### Modified functions:
 
@@ -1708,10 +1720,8 @@
     - now uses only finite sp.col values
 
 
-
 # Version 1.6.2 
 #### (Committed 2015-11-23)
-
 
 ### Modified functions:
 
@@ -1725,10 +1735,8 @@
     - now allows NA values
 
 
-
 # Version 1.6.1 
 #### (Committed 2015-11-13)
-
 
 ### Modified functions:
 
@@ -1760,10 +1768,8 @@
     - tables of significance for Jaccard and Baroni's indices now referred
 
 
-
 # Version 1.6 
 #### (Committed 2015-11-03)
-
 
 ### New functions:
 
@@ -1772,10 +1778,8 @@
 * fuzzyRangeChange (calculate overal loss, gain, and maintenance of favourability between models)
 
 
-
 # Version 1.5 
 #### (Committed 2015-10-29)
-
 
 ### New functions:
 
@@ -1796,10 +1800,8 @@
     - 'simplif' argument added
 
 
-
 # Version 1.4
 ## ... and previous (edits I can remember)
-
 
 ### Modified functions:
 
