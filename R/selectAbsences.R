@@ -1,5 +1,5 @@
-selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, dist.mat = NULL, seed = NULL, plot = !is.null(coord.cols), df = TRUE, verbosity = 2) {
-  # version 2.1 (21 Dec 2024)
+selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dist = NULL, max.dist = NULL, n = NULL, mult.p = NULL, bias = FALSE, bunch = FALSE, dist.mat = NULL, seed = NULL, plot = !is.null(coord.cols) || inherits(data, "SpatVector"), df = TRUE, verbosity = 2) {
+  # version 2.3 (9 Sep 2026)
 
   if (length(sp.cols) > 1) stop("Sorry, this function is currently implemented for only one 'sp.col' at a time.")
   if (bunch == TRUE) stop("Sorry, 'bunch=TRUE' is still pending implementation.")
@@ -13,7 +13,12 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
   )
 
   data_in <- data  # needed e.g. if plot or !df
-  data <- as.data.frame(data)  # coerces matrices, tibbles, SpatVectors
+  data <- as.data.frame(data)  # accommodates matrices, tibbles, SpatVectors
+  data$rownum <- seq_len(nrow(data))
+
+  if (missing(plot)) {
+    plot <- !is.null(coord.cols) || inherits(data_in, "SpatVector")
+  }
 
   abs.rows <- which(data[ , sp.cols] == 0)
   pres.rows <- which(data[ , sp.cols] == 1)
@@ -86,11 +91,19 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
 
         if (isTRUE(all.equal(as.vector(terra::minmax(bias)), c(0, 0)))) stop ("'bias' values must not be all zero.")
 
-        bias.abs <- terra::extract(bias, data[abs.rows, coord.cols], cells = FALSE, xy = FALSE, ID = FALSE)[ , 1]
+        if (inherits(data_in, "SpatVector")) {
+          bias.abs <- terra::extract(bias, data_in[abs.rows, ],
+                                     cells = FALSE, xy = FALSE, ID = FALSE)[ , 1]
+        } else {
+          if (is.null(coord.cols)) stop ("Using a bias raster requires that either 'data' is a SpatVector\nor 'coord.cols' are provided")
+          bias.abs <- terra::extract(bias, data_in[abs.rows, coord.cols],
+                                     cells = FALSE, xy = FALSE, ID = FALSE)[ , 1]
+        }  # end if SpatVector else
+
         bias.abs[!is.finite(bias.abs)] <- 0  # zero probability where NA
         abs.samp <- sample(abs.rows, n, replace = FALSE, prob = bias.abs)
 
-      } else {
+      } else {  # if bias not SpatRaster
         abs.samp <- sample(abs.rows, n, replace = FALSE, prob = NULL)
       }
 
@@ -102,38 +115,48 @@ selectAbsences <- function(data, sp.cols, coord.cols = NULL, CRS = NULL, min.dis
     }
 
     if (verbosity > 0) cat("\n", sum(data[ , sp.cols] == 0, na.rm = TRUE), " absences (and ", sum(data[ , sp.cols] == 1, na.rm = TRUE), " presences) in output.\n", sep = "")
+  }  # end if select
+
+  if (plot && is.null(coord.cols) && !inherits(data_in, "SpatVector")) {
+    plot <- FALSE
+    message("'plot=TRUE' requires that either 'data' is a SpatVector\nor 'coord.cols' are provided; plot not produced.")
   }
 
   if (plot) {
-    if (is.null(coord.cols)) {
-      message("'plot=TRUE' requires specifying 'coord.cols'; plot not produced.")
+    if ("terra" %in% .packages(all.available = TRUE)) {
 
-    } else {
+      if (!inherits(data_in, "SpatVector")) {
+        data_in <- terra::vect(data_in, geom = coord.cols, keepgeom = TRUE)
+      }  # for better-shaped spatial plot
 
-      if ("terra" %in% .packages(all.available = TRUE) && !inherits(data_in, "SpatVector")) {  # for better-shaped plot
-        data_in_sv <- terra::vect(data_in, geom = coord.cols, keepgeom = TRUE)
-        # data_sv <- terra::vect(data, geom = coord.cols, keepgeom = TRUE)
-        terra::plot(data_in_sv[data.frame(data_in_sv[ , sp.cols]) == 0, ],
-                    ext = terra::ext(data_in_sv),
-                    pch = 20, cex = 0.1, col = "orange")
-        terra::points(data[data.frame(data[ , sp.cols]) == 0, coord.cols],
-                      pch = "-", col = "red")
-        terra::points(data[data.frame(data[ , sp.cols]) == 1, coord.cols],
-                      pch = "+", col = "blue")
-      } else {
-        xrange <- range(data_in[ , coord.cols[1]], na.rm = TRUE)
-        yrange <- range(data_in[ , coord.cols[2]], na.rm = TRUE)
-        plot(data.frame(data_in)[data.frame(data_in)[ , sp.cols] == 0, coord.cols],
-             xlim = xrange, ylim = yrange,
-             pch = 20, cex = 0.1, col = "orange")
-        points(data[data[ , sp.cols] == 0, coord.cols],
-               pch = "-", col = "red")
-        points(data[data[ , sp.cols] == 1, coord.cols],
-               pch = "+", col = "blue")
-      }
-    }
-  }
+      abs_in <- which(terra::values(data_in)[, sp.cols] == 0)
+      abs_sel <- data$rownum[data[, sp.cols] == 0]
+      pres <- data$rownum[data[, sp.cols] == 1]
+
+      terra::plot(data_in[abs_in, ], pch = 20, cex = 0.1, col = "orange")
+      terra::points(data_in[abs_sel, ], pch = "-", col = "red")
+      terra::points(data_in[pres, ], pch = "+", col = "blue")
+
+    } else {  # if !terra
+
+      xrange <- range(data_in[, coord.cols[1]], na.rm = TRUE)
+      yrange <- range(data_in[, coord.cols[2]], na.rm = TRUE)
+
+      plot(data_in[data[ , sp.cols] == 0, coord.cols],
+        xlim = xrange, ylim = yrange,
+        pch = 20, cex = 0.1, col = "orange")
+
+      points(data[data[ , sp.cols] == 0, coord.cols],
+        pch = "-", col = "red")
+
+      points(data[data[ , sp.cols] == 1, coord.cols],
+        pch = "+", col = "blue")
+    }  # end if !terra
+  }  # end if plot
+
 
   if (!df) return(rownames(data.frame(data_in)) %in% rownames(data))
+
+  data$rownum <- NULL
   return(data[order(as.integer(rownames(data))), ])
 }

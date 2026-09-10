@@ -2,6 +2,11 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
 
   # version 3.9 (23 Mar 2026)
 
+  if (inherits(data, "SpatRaster")) {
+    if (!is.null(sp.cols)) stop ("Sorry, 'sp.col' not yet implemented for 'data' in raster layers.")
+    var.cols <- names(data)
+  }
+
   if (length(sp.cols) > 1) stop ("Sorry, 'corSelect' is currently implemented for only one 'sp.col' at a time.")
 
   univar.criteria <- c("VIF")
@@ -9,7 +14,7 @@ corSelect <- function(data, sp.cols = NULL, var.cols, coeff = TRUE, cor.thresh =
 
   if (!is.null(select) && !(select %in% c(univar.criteria, bivar.criteria))) stop ("Invalid 'select' criterion.")
 
-  data <- as.data.frame(data)  # accepts tibbles
+  data <- as.data.frame(data)  # accommodates e.g. tibbles and rasters
 
   if (is.numeric(var.cols)) var.cols <- colnames(data)[var.cols]
 
