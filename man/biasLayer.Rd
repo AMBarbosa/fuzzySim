@@ -18,10 +18,18 @@
 \details{
   This function can produce a bias layer to use e.g. as the 'bias' argument in \code{\link{selectAbsences}}, or in any software package that can use a layer indicating survey bias (e.g. Maxent). The input points, lines and/or polygons should reflect areas or features where survey is possible (if type = "rasterize") or generally more likely (if type = "distance") for the target species. They can be e.g. roads or other access pathways; natural parks or other usually surveyed areas; occurrence records of the target and/or other species of the same taxon or guild; and/or rivers and streams, for freshwater species.
 
-  The function calculates the bias layer by either computing the inverse standardized distance, i.e. one minus \code{\link[modEvA:range01]{modEvA::range01(}}distance), to the each of the features in 'svc'; or by rasterizing those features (depending on 'type'). It then combines the resulting raster layers into one, using the specified 'combine' method.
+  The function produces the bias layer by either computing the inverse standardized distance, i.e. one minus \code{\link[modEvA:range01]{modEvA::range01(}}distance), to the each of the features in 'svc'; or by rasterizing those features (depending on 'type'). It then combines the resulting raster layers into one, using the specified 'combine' method.
+
+  See also the GBIF-based sampling effort layers recently published by El-Gabbas (2026).
 }
 \value{
   A \code{\link[terra:SpatRaster]{terra::SpatRaster}}.
+}
+\references{
+El-Gabbas A. (2026) A Global, Taxon-Stratified, High-Resolution Sampling-Effort Dataset From GBIF for Bias-Aware Ecological Modelling. Diversity and Distributions 32(5): e70205
+}
+\seealso{
+\code{\link{selectAbsences}}
 }
 \examples{
   \dontrun{

@@ -7,38 +7,38 @@ Pairwise similarity between rangemaps
 Calculate pairwise similarity among rangemaps from a matrix of their areas of intersection and union
 }
 \usage{
-rangemapSim(rangemap.matrix, total.area, 
-method = c("Jaccard", "Sorensen", "Simpson", "Baroni"), 
-diag = FALSE, upper = FALSE, verbosity = 2)
+rangemapSim(rangemap.matrix, total.area,
+method = c("Jaccard", "Sorensen", "Simpson", "Baroni"),
+diag = TRUE, upper = TRUE, verbosity = 0)
 }
 \arguments{
   \item{rangemap.matrix}{
 a matrix like the one produced by function \code{\link{pairwiseRangemaps}}, containing the areas of pairwise intersection among rangemaps in the lower triangle, individual rangemap areas in the diagonal, and pairwise union areas in the upper diagonal.
 }
   \item{total.area}{
-numeric value indicating the total size of the study area, in the same units as the areas in the \code{rangemap.matrix}. Used only if 'method' uses shared absences (as is the case of "Baroni")
+[if 'method' uses shared absences (as is the case of "Baroni")] \code{\link[terra:SpatVector]{terra::SpatVector}} polygon delimiting the study region (same as the 'region' argument provided to \code{\link{pairwiseRangemaps}}); or a numeric value indicating the total size of the study area, in the same units as \code{rangemap.matrix}.
 }
   \item{method}{
-character value indicating the similarity index to use. Currently implemented indices are "Jaccard", "Sorensen", "Simpson" and "Baroni". The default is the first one.
+character value indicating the similarity index to use. Currently implemented indices are "Jaccard" (default), "Sorensen", "Simpson" and "Baroni".
 }
   \item{diag}{
-logical value indicating if the diagonal of the resulting matrix should be filled
+logical value (default TRUE) indicating whether the diagonal of the output matrix should be filled and not NA.
 }
   \item{upper}{
-logical value indicating if the upper triangle of the resulting matrix should be filled (symmetrical to the lower triangle)
+logical value (default TRUE) indicating whether the upper triangle of the output matrix should be filled (symmetrical to the lower triangle) and not NA.
 }
   \item{verbosity}{
-integer number indicating the amount of messages to display.
+integer number (default 0) indicating the volume of messages to display.
 }
 }
 \details{
-Distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented for comparing rangemaps based on their areas of intersection and union (Barbosa & Estrada, in press).
+Distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented for comparing rangemaps based on their areas of intersection and union (Barbosa & Estrada, 2016).
 }
 \value{
 This function returns a square matrix of pairwise similarities between the rangemaps in 'rangemap.matrix', calculated with the (first) similarity index specified in 'method'.
 }
 \references{
-Barbosa A.M. & Estrada A. (in press) Calcular corotipos sin dividir el territorio en OGUs: una adaptacion de los indices de similitud para su utilizacion directa sobre areas de distribucion. In: Areas de distribucion: entre puentes y barreras. Universidad de Granada, Spain.
+Barbosa A.M. & Estrada A. (2016) Calcular corotipos sin dividir el territorio en OGUs: una adaptacion de los indices de similitud para su utilizacion directa sobre areas de distribucion. In: Areas de distribucion: entre puentes y barreras. Universidad de Granada, Spain.
 
 Baroni-Urbani C. & Buser M.W. (1976) Similarity of Binary Data. Systematic Zoology, 25: 251-259
 

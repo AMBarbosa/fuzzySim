@@ -63,7 +63,7 @@ head(bin.sim.mat)
 
 
 \dontrun{
-# calculate a fuzzy version of the presence-absence data
+# compute a fuzzy version of the presence-absence data
 # based on inverse distance to presences:
 
 rotifers.invd <- distPres(rotif.env, sp.cols = 18:47,
@@ -81,36 +81,17 @@ fuz.sim.mat <- simMat(rotifers.invd[ , -1], method = "Jaccard")
 head(fuz.sim.mat)
 
 
-# plot the similarity matrices as colours:
+# plot the similarity matrices:
 
-image(x = 1:ncol(bin.sim.mat), y = 1:nrow(bin.sim.mat),
-z = bin.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "",
-axes = FALSE, main = "Binary similarity")
-axis(side = 1, at = 1:ncol(bin.sim.mat), tick = FALSE,
-labels = colnames(bin.sim.mat), las = 2)
-axis(side = 2, at = 1:nrow(bin.sim.mat), tick = FALSE,
-labels = rownames(bin.sim.mat), las = 2)
+heatmap(bin.sim.mat, scale = "none", cexRow = 0.5, cexCol = 0.5,
+main = "Binary similarity")
 
-image(x = 1:ncol(fuz.sim.mat), y = 1:nrow(fuz.sim.mat),
-z = fuz.sim.mat, col = rev(heat.colors(256)), xlab = "", ylab = "",
-axes = FALSE, main = "Fuzzy similarity")
-axis(side = 1, at = 1:ncol(fuz.sim.mat), tick = FALSE,
-labels = colnames(fuz.sim.mat), las = 2, cex = 0.5)
-axis(side = 2, at = 1:nrow(fuz.sim.mat), tick = FALSE,
-labels = rownames(fuz.sim.mat), las = 2)
-
-
-# plot a UPGMA dendrogram from each similarity matrix:
-
-plot(hclust(as.dist(1 - bin.sim.mat), method = "average"),
-main = "Binary cluster dendrogram")
-
-plot(hclust(as.dist(1 - fuz.sim.mat), method = "average"),
-main = "Fuzzy cluster dendrogram")
+heatmap(fuz.sim.mat, scale = "none", cexRow = 0.5, cexCol = 0.5,
+main = "Fuzzy similarity")
 }
 
 # you can get fuzzy chorotypes from these similarity matrices
-# (or fuzzy biotic regions if you transpose 'data'),
+# (or fuzzy biotic regions if you transpose 'data',
 # so that localities are in columns and species in rows)
 # using the RMACOQUI package (Olivero et al. 2011)
 }

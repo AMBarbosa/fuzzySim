@@ -26,7 +26,7 @@ logical value indicating whether NA values should be ignored. The default is TRU
 \details{
 Similarity between ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented in their fuzzy versions (Barbosa, 2015), able to deal with both binary and fuzzy data. Jaccard's and Baroni's indices have associated tables of significant values (Baroni-Urbani & Buser 1976, Real & Vargas 1996, Real 1999).
 
-Note that the Jaccard index's translation to fuzzy logic (where intersection = minimum and union = maximum) is equivalent to the weighted Jaccard index (Ioffe 2010) and to the overlap, coincidence and consistence indices of Real et al. (2010).
+Note that the Jaccard index is equivalent to the Tanimoto index (Tanimoto, 1958), and that its translation to fuzzy logic (where intersection = minimum and union = maximum) is equivalent to the weighted Jaccard index (Ioffe 2010) and to the overlap, coincidence and consistence indices of Real et al. (2010).
 
 Jaccard's and Sorensen's indices have also been recommended as prevalence-independent metrics for evaluating the performance of models of species distributions and ecological niches (Leroy et al. 2018). These indices are equivalent to other previously recommended model evaluation metrics: the F-measure (which equals Sorensen's index), and the proxy of the F-measure for presence-background data, which equals 2 times Jaccard's index (Li and Guo 2013, Leroy et al. 2018).
 
@@ -59,6 +59,8 @@ Real R. & Vargas J.M (1996) The probabilistic basis of Jaccard's index of simila
 Simpson, G.G. (1960) Notes on the measurement of faunal resemblance. Amer. J. Sci. 258A, 300-311
 
 Sorensen T. (1948) A method of establishing groups of equal amplitude in plant sociology based on similarity of species and its application to analyses of the vegetation on Danish commons. Kongelige Danske Videnskabernes Selskab, 5(4): 1-34
+
+Tanimoto T.T. (1958) An elementary mathematical theory of classification and prediction. Internal IBM Technical Report
 
 Zadeh L.A. (1965) Fuzzy sets. Information and Control, 8: 338-353
 }

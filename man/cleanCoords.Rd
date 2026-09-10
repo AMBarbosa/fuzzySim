@@ -8,22 +8,23 @@
 ). Row names are inheritted from the input data frame, i.e. if row "2" is cleaned out, output rownames will be c("1", "3", ...).
 }
 \usage{
-  cleanCoords(data, coord.cols = NULL, uncert.col = NULL, abs.col = NULL,
-  year.col = NULL, rm.dup = !is.null(coord.cols),
+  cleanCoords(data, coord.cols = c("decimalLongitude", "decimalLatitude"),
+  uncert.col = "coordinateUncertaintyInMeters", abs.col = "occurrenceStatus",
+  year.col = "year", rm.dup = !is.null(coord.cols),
   rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols),
   rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols),
   rm.equal = !is.null(coord.cols),   rm.imposs = !is.null(coord.cols),
   rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols),
   imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000,
   uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL,
-  year.na.pass = TRUE, plot = TRUE, extend = 0.1)
+  year.na.pass = TRUE, plot = TRUE, extend = 0.1, ...)
 }
 \arguments{
   \item{data}{an object inheriting class 'data.frame' with the spatial coordinates to be cleaned, or a 'SpatVector' of points.}
-  \item{coord.cols}{character or integer vector of length 2, with either the names or the positions of the columns that contain the spatial coordinates in 'data' - in this order, LONGitude and LATitude, or x and y. Can be left NULL if 'data' is a 'SpatVector', in which case the coordinates will be extracted with terra::crds().}
-  \item{uncert.col}{character or integer vector of length 1, with either the name or the position of the column that reports spatial uncertainty in 'data' (e.g., in GBIF this column is usually named "coordinateUncertaintyInMeters").}
-  \item{abs.col}{character or integer vector of length 1, with either the name or the position of the column that specifies whether the species is present or absent (e.g., in GBIF this column is usually named "occurrenceStatus"). If povided, rows where the value in this column is not NA and is either (case-insensitive) "absent" or "ausente" will be removed.}
-  \item{year.col}{character or integer vector of length 1, with either the name or the position of the column that specifies the year in which the observation was made (e.g., in GBIF this column is usually named "year").}
+  \item{coord.cols}{character or integer vector of length 2, with either the names or the positions of the columns that contain the spatial coordinates in 'data' - in this order, LONGitude and LATitude, or x and y. Can be NULL if 'data' is a 'SpatVector', in which case the coordinates will be extracted with terra::crds().}
+  \item{uncert.col}{character or integer vector of length 1, with either the name or the position of the column that reports spatial uncertainty in 'data' (e.g., in GBIF this column is usually named "coordinateUncertaintyInMeters", the default).}
+  \item{abs.col}{character or integer vector of length 1, with either the name or the position of the column that specifies whether the species is present or absent (e.g., in GBIF this column is named "occurrenceStatus", the default). If povided, rows where the value in this column is not NA and is either (case-insensitive) "absent" or "ausente" will be removed.}
+  \item{year.col}{character or integer vector of length 1, with either the name or the position of the column that specifies the year in which the observation was made (e.g., in GBIF this column is named "year", the default).}
   \item{rm.dup}{logical, whether to remove rows with exactly the same location, i.e. the same pair of longitude-latitude coordinates. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
   \item{rm.missing.any}{logical, whether to remove rows where at least one of the coordinates is NA. The default is TRUE if 'coord.cols' is not NULL, and FALSE otherwise.}
   \item{rm.missing.both}{logical, whether to remove rows where both coordinates are NA. The default is TRUE if 'coord.cols' is not NULL and FALSE otherwise, but it is not used (as it is redundant) if rm.missing.any=TRUE.}
@@ -41,7 +42,8 @@
   \item{year.min}{positive integer specifying the minimum (earliest) value admitted for the year column. The default is NULL (no limit).}
   \item{year.na.pass}{logical, whether rows with NA in 'year.col' should be kept as if fulfilling the year.min criterion. The default is TRUE.}
   \item{plot}{logical value specifying whether to plot the result. The default is TRUE.}
-  \item{extend}{numeric value specifying the proportion of the input coordinates range by which to increase the extent of the output plot (if plot=TRUE). The default is 0.1, i.e. 10\%.}
+  \item{extend}{(if plot=TRUE) numeric value specifying the proportion of the input coordinates range by which to increase the extent of the output plot. The default is 0.1, i.e. 10\%.}
+    \item{\dots}{(if plot=TRUE) some additional arguments that can be passed to \code{\link{plot}}, e.g "main" (plot title).}
 }
 \details{
   This function applies some basic cleaning procedures for species occurrence data, removing some of the most common errors in biodiversity databases. It is inspired by a few functions (namely 'coord_incomplete', 'coord_imprecise', 'coord_impossible', 'coord_unlikely' and 'coord_uncertain') that were present in the 'scrubr' package by Scott Chamberlain, which was archived (https://github.com/ropensci-archive/scrubr). It implements some additional cleaning procedures, such as removal of records of absence and records older than a given year. It also maps the result.
