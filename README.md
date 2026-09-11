@@ -1,7 +1,7 @@
 # `fuzzySim`: Fuzzy Similarity in Species Distributions
 
 <p align="center">
-<img width="180" height="180" alt="image" src="https://github.com/user-attachments/assets/eec03c5e-80de-4048-8dbd-bdd6235062c4" />
+<img width="180" height="180" alt="image" title="logo made with terra, geovizr, hexSticker and magick" src="https://github.com/user-attachments/assets/eec03c5e-80de-4048-8dbd-bdd6235062c4" />
 </p>
 
 `fuzzySim` can convert binary presence-absence to fuzzy occurrence data, using e.g. trend surface analysis, inverse distance interpolation or prevalence-independent environmental favourability modelling, for one or more species simultaneously.
