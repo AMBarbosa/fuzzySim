@@ -6,11 +6,20 @@
 * selectAbsences
     - fixed error when 'data' SpatVector and plot = TRUE
 
+* cleanCoords
+    - added 'legend' argument (default NA for backward compatibility)
+
 
 ### Other modified files:
 
 * fuzsim.Rd
     - mention Jaccard equivalence to Tanimoto index
+
+* fuzzyRangeChange.Rd
+    - add Details section and simple 1-0 Examples to illustrate how it works
+
+* clampVars.Rd
+    - recommend computing a clamping mask
 
 
 # Version 4.59 -> CRAN

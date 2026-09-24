@@ -12,7 +12,7 @@ fuzzyOverlay <- function(data,
   if (inherits(data_in, "SpatRaster")) {
     data <- terra::values(data, na.rm = FALSE)
   } else {
-    data <- as.data.frame(data)  # converts vector, matrix, tibble
+    data <- as.data.frame(data)  # accommodates vector, matrix, tibble
   }
 
   if (!is.null(overlay.cols))
@@ -41,13 +41,14 @@ fuzzyOverlay <- function(data,
     out <- apply(data, MARGIN = 1, FUN = sum, na.rm = na.rm) - apply(data, MARGIN = 1, FUN = prod, na.rm = na.rm)
 
   else if (op == "maintenance")
-    out <- ifelse(round(data[,2], digits = round.digits) == round(data[,1], digits = round.digits),
+    out <- ifelse(round(data[,2], digits = round.digits) ==
+                    round(data[,1], digits = round.digits),
                   round(data[,1], digits = round.digits),
                   0)
 
   else if (op %in% c("xor", "AnotB", "expansion", "contraction", "change")) {
     if (ncol(data) != 2)
-      stop ("This 'op' works only for 'data' with 2 columns or layers.")
+      stop ("This 'op' applies only to 'data' with 2 columns or layers.")
 
     if (op == "xor")
       out <- pmax(pmin(data[,1], 1 - data[,2], na.rm = na.rm),

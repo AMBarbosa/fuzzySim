@@ -1,5 +1,5 @@
-cleanCoords <- function(data, coord.cols = c("decimalLongitude", "decimalLatitude"), uncert.col = "coordinateUncertaintyInMeters", abs.col = "occurrenceStatus", year.col = "year", rm.dup = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL, year.na.pass = TRUE, plot = TRUE, extend = 0.1, ...) {
-  # version 2.0 (7 May 2026)
+cleanCoords <- function(data, coord.cols = c("decimalLongitude", "decimalLatitude"), uncert.col = "coordinateUncertaintyInMeters", abs.col = "occurrenceStatus", year.col = "year", rm.dup = !is.null(coord.cols), rm.missing.any = !is.null(coord.cols), rm.missing.both = !is.null(coord.cols), rm.zero.any = !is.null(coord.cols), rm.zero.both = !is.null(coord.cols), rm.equal = !is.null(coord.cols), rm.imposs = !is.null(coord.cols), rm.imprec.any = !is.null(coord.cols), rm.imprec.both = !is.null(coord.cols), imprec.digits = 0, rm.uncert = !is.null(uncert.col), uncert.limit = 50000, uncert.na.pass = TRUE, rm.abs = !is.null(abs.col), year.min = NULL, year.na.pass = TRUE, plot = TRUE, extend = 0.1, legend = NA, ...) {
+  # version 2.1 (23 Sep 2026)
 
   stopifnot(
     inherits(data, "data.frame") || inherits(data, "SpatVector"),
@@ -135,6 +135,10 @@ cleanCoords <- function(data, coord.cols = c("decimalLongitude", "decimalLatitud
       removed <- data.in[!duplicated(rbind(data, data.in))[seq_len(nrow(data.in))], coord.cols]
       plot(removed, pch = 4, cex = 0.4, col = "red", xlim = x_range, ylim = y_range, ...)
       points(data[ , coord.cols], pch = 20, cex = 0.5, col = "blue")
+    }
+
+    if (!is.na(legend) && !is.null(legend) && legend != "n") {
+      legend(x = legend, legend = c("retained", "removed"), pch = c(20, 4), col = c("blue", "red"), bg = adjustcolor("white", 0.5))
     }
 
     return(data)

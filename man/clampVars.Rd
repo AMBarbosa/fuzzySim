@@ -3,7 +3,9 @@
 \title{Clamp variables}
 
 \description{
-  This function is a wrapper (with additional input options) for \code{\link[terra:clamp]{terra::clamp}}, which caps each variable in a table or a (multilayer) raster to the extreme values observed in a reference (e.g. model training) dataset. Values below the reference minimum are set to that minimum (or to NA), and values above the reference maximum are set to that maximum (or NA). This may help prevent unreliable extrapolation when projecting a model beyond the training conditions.
+  This function is a wrapper (with additional input options) for \code{\link[terra:clamp]{terra::clamp}}, which caps each variable, in a table or a (multilayer) raster, to the extreme values observed in a reference (e.g. model training) dataset. Values below the reference minimum are set to that minimum (or to NA), and values above the reference maximum are set to that maximum (or NA).
+
+  Clamping may help prevent overly unreliable extrapolation when projecting a model beyond the training conditions. The trade-off is that this assumes the response remains completely flat beyond those training thresholds, which is not entirely realistic either. Thus, a "clamping mask" should normally also be computed, i.e. the difference between the model predictions obtained with the original and the clamped variables, to show where and by how much the predictions are changed by clamping.
 }
 
 \usage{
