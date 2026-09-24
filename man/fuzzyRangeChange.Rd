@@ -13,7 +13,7 @@ measures = c("Gain", "Loss", "Stable positive", "Stable negative", "Balance"),
 plot = TRUE, plot.type = "waterfall", x.lab = TRUE, ...)
 }
 \details{
-No thresholds are involved in any of the calculations. See bottom Examples fora simple illustration of how each metric works, using the special case when all suitabilities are either 0 or 1.
+No thresholds are involved in any of the calculations. See bottom Examples for a simple illustration of how each metric works, using the special case when all favourabilities are either 0 or 1.
 }
 \arguments{
   \item{pred1}{numeric vector or SpatRaster layer containing the values (between 0 and 1) that will serve as reference.}
@@ -35,9 +35,9 @@ This function returns a data frame with the following values in different rows (
 \item{Loss}{sum of favourability values that decrease from 'pred1' to 'pred2' (fuzzy equivalent of the number of localities that lose presence)}
 \item{Stable positive}{fuzzy number of localities that remain favourable from 'pred1' to 'pred2' (fuzzy equivalent of the number of presences that remain as such)}
 \item{Stable negative}{fuzzy number of localities that remain unfavourable from 'pred1' to 'pred2' (fuzzy equivalent of the number of absences that remain as such)}
-\item{Balance}{sum of the change in predicted values from 'pred1' to 'pred2' (fuzzy equivalent of the overall balance between gained and lost presences)}
+\item{Balance}{sum of the change in predicted values from 'pred1' to 'pred2' (fuzzy equivalent of the overall balance between gained and lost presences, or the proportional gain in potential presence area)}
 
-If number=TRUE (the default), the output has a column named "Number" with the number of localities in each of the above categories. If prop=TRUE (the default), the output has a column named "Proportion" in which this number is divided by the total number of reference values (i.e., the fuzzy range or fuzzy non-range size). If plot=TRUE (the default), a plot is also produced from the values in the last column of the output data frame.
+If number=TRUE (the default), the output has a column named "Number" with the number of localities in each of the above categories. If prop=TRUE (the default), the output has a column named "Proportion" where this number is divided by the total number of reference values (i.e., the fuzzy range or fuzzy non-range size). If plot=TRUE (the default), a plot is also produced from the values in the last column of the output.
 }
 \author{A. Marcia Barbosa}
 \seealso{
@@ -80,20 +80,21 @@ fuzzyRangeChange(fav_current, fav_imag, plot.type = "lollipop")
 
 present <- c(0, 0, 1, 0, 1)
 future  <- c(1, 1, 1, 0, 0)
+
 fuzzyRangeChange(present, future)
 
 #                 Number  Prop
-# Gain                 2  1.00  # 100\% gained presence area (new presences
-                                # double the stable presences)
-# Loss                -1 -0.50  # 50\% of the initial presences became absences
-# Stable positive      1  0.50  # 50\% of the initial presences remained presences
+# Gain                 2  1.00  # 2 new presences, 100\% gained presence area
+                                # (new presences double the stable presences)
+# Loss                -1 -0.50  # 1 (50\%) initial presences became absences
+# Stable positive      1  0.50  # 1 (50\%) initial presences remained presences
 # Stable negative      1  0.33  # 1/3 of the initial absences remained absences
-# Balance              1  0.50  # final presences are 50\% more than
-                                # initial presences
+# Balance              1  0.50  # 1 more total presence (50\% more) than initial
 
 
 present <- c(0, 0, 1, 0, 1, 1)
 future  <- c(1, 1, 1, 0, 0, 1)
+
 fuzzyRangeChange(present, future)
 
 #                 Number  Prop
@@ -102,5 +103,12 @@ fuzzyRangeChange(present, future)
 # Stable positive      2  0.67  # 2/3 of initial presences remained presences
 # Stable negative      1  0.33  # 1/3 of initial absences remained absences
 # Balance              1  0.33  # 1 more presence than initially, 33\% gain in
-                                # total presence area (went from 3 to 4 presences)
+                                # total presence area (from 3 to 4 presences)
+
+# with fuzzy input values (e.g. predicted favourabilities) instead of 1s and 0s,
+# the mechanism is the same, but a fuzzy value (e.g. 0.35, 0.92) counts as a
+# "partial" presence, and proportions are calculated accordingly
+# a 25\% increase is from 0.2 to 0.25, but from 0.5 to 0.625 and from 0.8 to 1
+# so, higher favourability values have more weight in the output
+# but small favourability values also represent a bit of potential presence
 }
