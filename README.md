@@ -8,12 +8,22 @@
 
 It can then calculate e.g. fuzzy change and fuzzy similarity among (fuzzy) species distributions and/or among (fuzzy) regional species compositions, avoiding the use of thresholds and instead using fuzzy logic versions of known similarity indices.
 
-# Install the latest version:
-'fuzzySim' was created long before I knew GitHub, and it's still maintained on its original platform, [R-Forge](https://fuzzysim.r-forge.r-project.org/). So, you can install the latest development version with:
+
+# Install the package:
+
+Package `fuzzySim` can be installed from CRAN, where it is updated relatively often:
+
+`install.packages("fuzzySim")`
+
+The development version may include more recent enhancements and small bug fixes. `fuzzySim` was created long before I knew GitHub, and it's still normally maintained on its original platform, [R-Forge](https://fuzzySim.r-forge.r-project.org/). So, you can normally install the latest version from there:
 
 `install.packages("fuzzySim", repos="http://R-Forge.R-project.org")`
 
-The package is UPDATED LESS REGULARLY HERE on GitHub. The package is also on CRAN, but the development version (above) often includes recent enhancements and bug fixes.
+Sadly, [R-Forge](https://fuzzySim.r-forge.r-project.org/) servers are sometimes offline, so I try to also keep an updated version of the development version here on GitHub:
+
+`remotes::install_github("AMBarbosa/fuzzySim")`
+
 
 # Package homepage:
+
 Find out more about the package, along with usage manuals and literature examples, at https://fuzzysim.r-forge.r-project.org/
