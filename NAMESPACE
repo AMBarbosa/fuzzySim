@@ -13,3 +13,5 @@ importFrom("stats", "add1", "as.dist", "as.formula", "drop1", "anova",
 importFrom("stringi", "stri_unescape_unicode")
 importFrom("utils", "combn", "packageVersion", "read.csv", "stack",
            "setTxtProgressBar", "txtProgressBar", "write.csv")
+importFrom("grDevices", "adjustcolor")
+
