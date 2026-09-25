@@ -1,5 +1,5 @@
-# Version 4.60
-#### (Committed 2026-  -  )
+# Version 4.60 -> CRAN
+#### (Committed 2026-09-25)
 
 ### Modified functions:
 
