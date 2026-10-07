@@ -7,26 +7,21 @@ Fuzzy similarity
 This function calculates fuzzy similarity, based on a fuzzy version of the binary similarity index specified in \code{method}, between two binary (0 or 1) or fuzzy (between 0 and 1) variables.
 }
 \usage{
-fuzSim(x, y, method, na.rm = TRUE)
+fuzSim(x, y, method, na.rm = TRUE, simplif = FALSE)
 }
 \arguments{
-  \item{x}{
-numeric vector or SpatRaster layer of (optionally fuzzy) presence-absence data, with 1 meaning presence, 0 meaning absence, and values in between meaning fuzzy presence (or the degree to which each locality belongs to the set of species presences, or to which each species belongs to the locality; Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with functions \code{\link{multGLM}}, \code{\link{multTSA}} or \code{\link{distPres}} in this package, or with any other function that computes presence probability or spatial/environmental suitability for a species.
-}
-  \item{y}{
-numeric vector or SpatRaster to overlap with 'x', of the same length and in the same order.
-}
-  \item{method}{
-the similarity index to compute between x and y. Currently available options are "Jaccard", "Sorensen", "Simpson" and "Baroni" (see Details).
-}
-  \item{na.rm}{
-logical value indicating whether NA values should be ignored. The default is TRUE.
-}
+  \item{x}{numeric vector or SpatRaster layer of (optionally fuzzy) presence-absence data, with 1 meaning presence, 0 meaning absence, and values in between meaning fuzzy presence (or the degree to which each locality belongs to the set of species presences, or to which each species belongs to the locality; Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with functions \code{\link{multGLM}}, \code{\link{multTSA}} or \code{\link{distPres}} in this package, or with any other function that computes presence probability or spatial/environmental suitability for a species.}
+  \item{y}{numeric vector or SpatRaster to overlap with 'x', of the same length and in the same order.}
+  \item{method}{the similarity index to compute between x and y. Currently available options are "Jaccard", "Sorensen", "Simpson" and "Baroni" (see Details).}
+  \item{na.rm}{logical value (default TRUE) indicating whether missing or non-finite values should be ignored.}
+  \item{simplif}{logical value (default FALSE) indicating whether to run a faster simplified version with fewer checks, used e.g. by \code{\link{simMat}} (which runs its own checks already).}
 }
 \details{
-Similarity between ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented in their fuzzy versions (Barbosa, 2015), able to deal with both binary and fuzzy data. Jaccard's and Baroni's indices have associated tables of significant values (Baroni-Urbani & Buser 1976, Real & Vargas 1996, Real 1999).
+Similarity between ecological communities, beta diversity patterns, biotic regions, and distributional relationships among species are commonly determined based on pair-wise (dis)similarities in species' occurrence patterns. Some of the most commonly employed similarity indices are those of Jaccard (1901), Sorensen (1948), Simpson (1960) and Baroni-Urbani & Buser (1976), which are here implemented in their fuzzy versions, able to deal with both binary and fuzzy data (Barbosa, 2015).
 
-Note that the Jaccard index is equivalent to the Tanimoto index (Tanimoto, 1958), and that its translation to fuzzy logic (where intersection = minimum and union = maximum) is equivalent to the weighted Jaccard index (Ioffe 2010) and to the overlap, coincidence and consistence indices of Real et al. (2010).
+The Jaccard and Baroni indices have associated tables of significant values within given sample sizes (Baroni-Urbani & Buser 1976, Real & Vargas 1996, Real 1999). There are also methods for estimating Jaccard significance for any sample size (Chung et al., 2019).
+
+Note that the Jaccard index is equivalent to the Tanimoto index (Tanimoto, 1958), and that its translation to fuzzy logic (where intersection = minimum and union = maximum; Zadeh, 1965) is equivalent to the weighted Jaccard index (Ioffe 2010) and to the overlap, coincidence and consistence indices of Real et al. (2010).
 
 Jaccard's and Sorensen's indices have also been recommended as prevalence-independent metrics for evaluating the performance of models of species distributions and ecological niches (Leroy et al. 2018). These indices are equivalent to other previously recommended model evaluation metrics: the F-measure (which equals Sorensen's index), and the proxy of the F-measure for presence-background data, which equals 2 times Jaccard's index (Li and Guo 2013, Leroy et al. 2018).
 
@@ -42,6 +37,8 @@ Barbosa A.M. (2015) fuzzySim: applying fuzzy logic to binary similarity indices 
 
 Baroni-Urbani C. & Buser M.W. (1976) Similarity of Binary Data. Systematic Zoology, 25: 251-259
 
+Chung N., Miasojedow B., Startek M. & Gambin A. (2019) Jaccard/Tanimoto similarity test and estimation methods for biological presence-absence data. BMC Bioinformatics 20 (Suppl 15), 644
+
 Ioffe S. (2010) Improved Consistent Sampling, Weighted Minhash and L1 Sketching. 2010 IEEE International Conference on Data Mining, Sydney, NSW, Australia, pp. 246-255, doi: 10.1109/ICDM.2010.80
 
 Jaccard P. (1901) Etude comparative de la distribution florale dans une portion des Alpes et des Jura. Memoires de la Societe Vaudoise des Sciences Naturelles, 37: 547-579
@@ -55,6 +52,8 @@ Olivero J., Real R. & Vargas J.M. (1998) Distribution of breeding, wintering and
 Real R. (1999) Tables of significant values of Jaccard's index of similarity. Miscellania Zoologica 22: 29:40
 
 Real R. & Vargas J.M (1996) The probabilistic basis of Jaccard's index of similarity. Systematic Biology 45: 380-385
+
+Real R., Marquez A.L., Olivero J. & Estrada A. (2010) Species distribution models in climate change scenarios are still not useful for informing policy planning: an uncertainty assessment using fuzzy logic. Ecography, 33: 304-314
 
 Simpson, G.G. (1960) Notes on the measurement of faunal resemblance. Amer. J. Sci. 258A, 300-311
 
@@ -76,7 +75,7 @@ data(rotif.env)
 names(rotif.env)
 
 
-# you can calculate similarity between binary species occurrence patterns:
+# you can compute similarity between binary species occurrence patterns:
 
 fuzSim(rotif.env[, "Abrigh"], rotif.env[, "Afissa"], method = "Jaccard")
 fuzSim(rotif.env[, "Abrigh"], rotif.env[, "Afissa"], method = "Sorensen")
@@ -85,7 +84,7 @@ fuzSim(rotif.env[, "Abrigh"], rotif.env[, "Afissa"], method = "Baroni")
 
 
 # or you can model environmental favourability for these species
-# and calculate fuzzy similarity between their environmental predictions
+# and compute fuzzy similarity between their environmental predictions
 # which goes beyond the strict coincidence of their occurrence records:
 
 fav <- multGLM(rotif.env, sp.cols = 18:19, var.cols = 5:17, step = TRUE,

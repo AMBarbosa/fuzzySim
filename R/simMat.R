@@ -1,14 +1,14 @@
-simMat <- function(data, method, diag = TRUE, upper = TRUE, verbosity = 2, plot = FALSE, ...) {
+simMat <- function(data, method, diag = TRUE, upper = TRUE, na.rm = FALSE, verbosity = 2, plot = FALSE, ...) {
 
-  # version 2.4 (3 Oct 2022)
+  # version 2.5 (7 Oct 2026)
+
+  method <- match.arg(method, c("Baroni", "Jaccard", "Simpson", "Sorensen"))
 
   if (verbosity > 1)  start.time <- Sys.time()
 
-  data <- as.data.frame(data)
+  data <- as.data.frame(data)  # accommodates SpatRaster, tibble, etc.
 
-  stopifnot(na.omit(data) >= 0,
-            na.omit(data) <= 1,
-            method %in% c("Jaccard", "Sorensen", "Simpson", "Baroni"))
+  stopifnot(all(data >= 0 & data <= 1, na.rm = TRUE))
 
   n.subjects <- ncol(data)
 
@@ -25,24 +25,29 @@ simMat <- function(data, method, diag = TRUE, upper = TRUE, verbosity = 2, plot 
     progbar <- txtProgressBar(min = 0, max = n.pairs, style = 3, char = "-")
   }
 
-  # quarter <- round(n.pairs / 4)
-  # half <- round(n.pairs / 2)
-  # threequarters <- half + quarter
+  if (!anyNA(data))  na.rm <- FALSE  # otherwise unnecessary slower pairwise checks
 
   pair <- 0
   for (ind in inds) {
+
     pair <- pair + 1
-    if (verbosity > 0) {
-      setTxtProgressBar(progbar, pair)
-    }
+    if (verbosity > 0) setTxtProgressBar(progbar, pair)
+
     row <- rownames(sim.mat)[ind[1]]
     col <- colnames(sim.mat)[ind[2]]
-    sim.mat[ind[1], ind[2]] <- fuzSim(x = data[ , row], y = data[ , col], method = method)
-    # if(pair == quarter) message ("25% done...")
-    # if(pair == half) message ("50% done...")
-    # if(pair == threequarters) message ("75% done...")
-    # if(pair == n.pairs) message ("Finished!")
-  }  # end for ind lower
+
+    x <- data[ , row]
+    y <- data[ , col]
+
+    if (na.rm && anyNA(c(x, y))) {
+      # here because slower if checked repeatedly by fuzSim()
+      finite <- is.finite(x) & is.finite(y)
+      x <- x[finite]
+      y <- y[finite]
+    }  # end if na.rm
+
+    sim.mat[ind[1], ind[2]] <- fuzSim(x, y, method = method, simplif = TRUE)
+  }  # end for ind
 
   if (diag) diag(sim.mat) <- 1
   if (upper) {

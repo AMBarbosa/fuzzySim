@@ -1,39 +1,40 @@
-fuzSim <- function(x, y, method, na.rm = TRUE) {
+fuzSim <- function(x, y, method, na.rm = TRUE, simplif = FALSE) {
 
-  # version 2.0 (3 Oct 2024)
+  # version 2.1 (7 Oct 2026)
 
-  if (inherits(x, "SpatRaster"))
-    x <- terra::values(x, mat = FALSE, dataframe = FALSE)
-  if (inherits(y, "SpatRaster"))
-    y <- terra::values(y, mat = FALSE, dataframe = FALSE)
+  if (!simplif) {
+    if (inherits(x, "SpatRaster"))
+      x <- terra::values(x, mat = FALSE, dataframe = FALSE)
+    if (inherits(y, "SpatRaster"))
+      y <- terra::values(y, mat = FALSE, dataframe = FALSE)
 
-  x <- unlist(x)
-  y <- unlist(y)
+    # for non-vector inputs:
+    x <- unlist(x)
+    y <- unlist(y)
 
-  method <- match.arg(method, c("Jaccard", "Sorensen", "Simpson", "Baroni"))
-  dab.methods <- c("Baroni")
+    stopifnot(length(x) == length(y),
+              # min(c(x, y, na.rm = TRUE)) >= 0,
+              # max(c(x, y, na.rm = TRUE)) <= 1,
+              all(c(x, y) >= 0 & c(x, y) <= 1, na.rm = TRUE)
+    )
 
-  if (na.rm) {
-    data <- cbind(x, y)
-    data <- na.omit(data)
-    x <- data[ , 1]
-    y <- data[ , 2]
+    if (na.rm && anyNA(c(x, y))) {
+      finite <- is.finite(x) & is.finite(y)
+      x <- x[finite]
+      y <- y[finite]
+    }
+
+    method <- match.arg(method, c("Baroni", "Jaccard", "Simpson", "Sorensen"))
   }
 
-  stopifnot (length(x) == length(y),
-             #x >= 0 & x <= 1,
-             #y >= 0 & y <= 1
-             min(c(x, y, na.rm = TRUE)) >= 0,
-             max(c(x, y, na.rm = TRUE)) <= 1
-             )
-
+  dab.methods <- c("Baroni")
   A <- sum(x)
   B <- sum(y)
   C <- sum(pmin(x, y))
   if (method %in% dab.methods) D <- sum(1 - pmax(x, y))
 
+  if (method == "Baroni") return((sqrt(C * D) + C) / (sqrt(C * D) + A + B - C))
   if (method == "Jaccard") return(C / (A + B - C))
-  else if (method == "Sorensen") return(2 * C / (A + B))
-  else if (method == "Simpson") return(C / min(A, B))
-  else if (method == "Baroni") return((sqrt(C * D) + C) / (sqrt(C * D) + A + B - C))
+  if (method == "Simpson") return(C / min(A, B))
+  if (method == "Sorensen") return(2 * C / (A + B))
 }

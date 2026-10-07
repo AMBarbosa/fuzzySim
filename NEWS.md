@@ -1,13 +1,43 @@
+# Version 4.61
+#### (Committed 2026-10-07)
+
+### Modified functions:
+
+* fuzSim
+    - add 'simplif' argument for faster computation with fewer checks (to use by 'simMat')
+    - optimize 'na.rm' code
+
+* simMat
+    - use 'fuzSim' with 'simplif=TRUE' (much faster)
+    - add 'na.rm' argument, with checks to avoid redundant use
+
+
+### Other modified files:
+
+* fuzSim.Rd
+    - add Real et al. (2010) missing reference, and Chung et al. (2019) for Jaccard significance
+
+* fuzzyRangeChange.Rd
+    - improve text
+
+* DESCRIPTION
+    - add package DOI (CRAN)
+    - add GitHub URL besides R-Forge
+
+* CITATION
+    - replace URL with package DOI
+
+
 # Version 4.60 -> CRAN
 #### (Committed 2026-09-25)
 
 ### Modified functions:
 
 * selectAbsences
-    - fixed error when 'data' SpatVector and plot = TRUE
+    - fix error when 'data' SpatVector and plot = TRUE
 
 * cleanCoords
-    - added 'legend' argument (default NA for backward compatibility)
+    - add 'legend' argument (default NA for backward compatibility)
 
 
 ### Other modified files:
@@ -37,10 +67,10 @@
 ### Other modified files:
 
 * rangemapSim.Rd
-    - updated Barbosa & Estrada reference from 'in press'
+    - update Barbosa & Estrada reference from 'in press'
 
 * pairwise_rangemaps_tutorial.Rmd
-    - updated with Alytes examples and new outputs
+    - update with Alytes examples and new outputs
 
 
 # Version 4.58

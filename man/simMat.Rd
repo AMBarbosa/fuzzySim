@@ -7,26 +7,18 @@ Pair-wise (fuzzy) similarity matrix
 \code{simMat} takes multiple species occurrence data or regional species composition, either categorical (0 or 1) or fuzzy (between 0 and 1), and uses the \code{\link{fuzSim}} function to compute a square matrix of pair-wise similarities between them, using a fuzzy logic version (Barbosa, 2015) of the specified similarity index.
 }
 \usage{
-simMat(data, method, diag = TRUE, upper = TRUE, verbosity = 2, plot = FALSE, ...)
+simMat(data, method, diag = TRUE, upper = TRUE, na.rm = FALSE, verbosity = 2,
+plot = FALSE, ...)
 }
 \arguments{
-  \item{data}{
-a matrix, data frame, or multilayer SpatRaster containing (optionally fuzzy) species presence-absence data (in wide format, i.e. one column or layer per species), with 1 meaning presence, 0 meaning absence, and values in between for fuzzy presence (or the degree to which each locality belongs to the set of species presences; see Zadeh, 1965). Fuzzy presence-absence can be obtained, for example, with \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}}. These data can also be \code{\link{transpose}}d for comparing regional species compositions.
-}
-  \item{method}{
-the similarity index whose fuzzy version to use. See \code{\link{fuzSim}} for available options.
-}
-  \item{diag}{
-logical value indicating whether the diagonal of the matrix should be filled (with ones). Defaults to TRUE.
-}
-  \item{upper}{
-logical value indicating whether the upper triangle of the matrix (symmetric to the lower triangle) should be filled. Defaults to TRUE.
-}
-  \item{verbosity}{
-integer value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).
-}
-  \item{plot}{logical argument indicating whether to also plot the matrix as an image. The default is FALSE (for back-compatibility).}
-  \item{\dots}{some additional arguments can be passed to \code{\link{image}} (and through to \code{\link{plot}}) if plot=TRUE, such as 'col', 'main', 'font.main' or 'cex.main' (not 'axes', 'xlab' or 'ylab', which are already defined by simMat).}
+  \item{data}{a matrix, data frame, or multilayer SpatRaster containing (optionally fuzzy) species presence-absence data (in wide format, i.e. one column or layer per species), with 1 meaning presence, 0 meaning absence, and (optionally) values in between for fuzzy degree of presence. Fuzzy presence-absence can be obtained, for example, with \code{\link{multGLM}}, \code{\link{distPres}} or \code{\link{multTSA}}. These data can also be \code{\link{transpose}}d for comparing regional species compositions.}
+  \item{method}{the (fuzzy) similarity index to use. See \code{\link{fuzSim}} for available options.}
+  \item{diag}{logical value (default TRUE) indicating whether the diagonal of the matrix should be filled (with ones).}
+  \item{upper}{logical value (default TRUE) indicating whether the upper triangle of the matrix (symmetric to the lower triangle) should be filled.}
+  \item{verbosity}{integer value indicating the amount of messages to display; currently meaningful values are 0, 1, and 2 (the default).}
+  \item{na.rm}{logical value (default FALSE) indicating if pairwise missing or non-finite values should be ignored.}
+  \item{plot}{logical value (default FALSE for back-compatibility) indicating whether to plot the ouput matrix as an image.}
+  \item{\dots}{(if plot=TRUE) additional arguments that can be passed to \code{\link{image}} (and through to \code{\link{plot}}), such as 'col', 'main', 'font.main' or 'cex.main' (not 'axes', 'xlab' or 'ylab', which are already defined by \code{simMat}).}
 }
 \details{
 The fuzzy versions of species occurrence data and of binary similarity indices introduce tolerance for small spatial differences in species' occurrence localities, allow for uncertainty about species occurrence, and may compensate for under-sampling and geo-referencing errors (Barbosa, 2015).

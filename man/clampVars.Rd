@@ -5,7 +5,7 @@
 \description{
   This function is a wrapper (with additional input options) for \code{\link[terra:clamp]{terra::clamp}}, which caps each variable, in a table or a (multilayer) raster, to the extreme values observed in a reference (e.g. model training) dataset. Values below the reference minimum are set to that minimum (or to NA), and values above the reference maximum are set to that maximum (or NA).
 
-  Clamping may help prevent overly unreliable extrapolation when projecting a model beyond the training conditions. The trade-off is that this assumes the response remains completely flat beyond those training thresholds, which is not entirely realistic either. Thus, a "clamping mask" should normally also be computed, i.e. the difference between the model predictions obtained with the original and the clamped variables, to show where and by how much the predictions are changed by clamping.
+  Clamping may help prevent overly unreliable extrapolation when projecting a model beyond the training conditions. The trade-off is that this assumes the response remains completely flat beyond those training thresholds, which is not entirely realistic either (e.g. Pinilla-Buitrago et al., 2026). Thus, a "clamping mask" should normally also be computed, i.e. the difference between the model predictions obtained with the original and the clamped variables, to show where and by how much the predictions are changed by clamping.
 }
 
 \usage{
@@ -32,7 +32,7 @@
 
   Clamping of variables to stay within the range of model training values was originally implemented in Maxent (Phillips et al., 2006), but its rationale is applicable to other models. It can be recommended when projecting a model in space or time, to avoid extrapolating beyond the known responses.
 
-  Future versions of this function might implement one-sided clamping (Pinilla-Buitrago et al., 2026).
+  Future versions of this function might implement custom or one-sided clamping (Pinilla-Buitrago et al., 2026).
 }
 
 \value{The function returns an object of the same general type as 'vars', i.e. a \code{\link[terra:SpatRaster]{SpatRaster}} or a \code{\link{data.frame}} of the clamped 'vars'.}
